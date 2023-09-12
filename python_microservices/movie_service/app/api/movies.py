@@ -1,8 +1,9 @@
 from typing import List
 from fastapi import APIRouter, HTTPException
 
-from app.api.models import MovieIn, MovieOut
+from app.api.models import MovieIn, MovieOut, MovieUpdate
 from app.api import db_manager
+from app.api.service import is_cast_present
 
 movies = APIRouter()
 
@@ -12,11 +13,17 @@ async def index():
     return await db_manager.get_all_movies()
 
 
-@movies.post('/', status_code=201)
-async def add_movie(payload: MovieIn):
+@movies.post("/", response_model=MovieOut, status_code=201)
+async def create_movie(payload: MovieIn):
+    for cast_id in payload.casts_id:
+        if not is_cast_present(cast_id):
+            raise HTTPException(status_code=404,
+                                detail=f"Cast with id:{cast_id} not found")
+
     movie_id = await db_manager.add_movie(payload)
+
     response = {
-        'id': movie_id,
+        "id": movie_id,
         **payload.model_dump()
     }
 
