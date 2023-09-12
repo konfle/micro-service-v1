@@ -23,6 +23,6 @@ movies = Table('movies',
                Column('name', String(50)),
                Column('plot', String(250)),
                Column('genres', ARRAY(String)),
-               Column('casts', ARRAY(Integer)))
+               Column('casts_id', ARRAY(Integer)))
 
 database = Database(DATABASE_URL)
