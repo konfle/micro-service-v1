@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
+from typing import List
 
 app = FastAPI()
 
@@ -16,3 +18,10 @@ fake_movie_db = [
         'casts': ['Daisy Ridley', 'Adam Driver']
     }
 ]
+
+
+class Movie(BaseModel):
+    name: str
+    plot: str
+    genres: List[str]
+    casts: List[str]
