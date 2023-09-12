@@ -8,9 +8,17 @@ from app.api.service import is_cast_present
 movies = APIRouter()
 
 
-@movies.get('/', response_model=List[MovieOut])
-async def index():
+@movies.get("/", response_model=List[MovieOut])
+async def get_movies():
     return await db_manager.get_all_movies()
+
+
+@movies.get("/{id}/", response_model=MovieOut)
+async def get_movie(id: int):
+    movie = await db_manager.get_movie(id)
+    if not movie:
+        raise HTTPException(status_code=404, detail="Movie not found")
+    return movie
 
 
 @movies.post("/", response_model=MovieOut, status_code=201)
