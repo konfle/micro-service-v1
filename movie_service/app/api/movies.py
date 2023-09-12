@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, HTTPException, Header
+from fastapi import APIRouter, HTTPException
 
 from app.api.models import MovieIn, MovieOut
 from app.api import db_manager
@@ -17,25 +17,25 @@ async def add_movie(payload: MovieIn):
     movie_id = await db_manager.add_movie(payload)
     response = {
         'id': movie_id,
-        **payload.dict()
+        **payload.model_dump()
     }
 
     return response
 
 
 @movies.put('/{id}')
-async def update_movie(id: int, payload: MovieIn):
-    movie = await db_manager.get_movie(id)
+async def update_movie(movie_id: int, payload: MovieIn):
+    movie = await db_manager.get_movie(movie_id)
     if not movie:
         raise HTTPException(status_code=404,
                             detail="Movie not found")
 
-    update_data = payload.dict(exclude_unset=True)
+    update_data = payload.model_dump(exclude_unset=True)
     movie_in_db = MovieIn(**movie)
 
-    updated_movie = movie_in_db.copy(update=update_data)
+    updated_movie = movie_in_db.model_copy(update=update_data)
 
-    return await db_manager.update_movie(id,
+    return await db_manager.update_movie(movie_id,
                                          updated_movie)
 
 
