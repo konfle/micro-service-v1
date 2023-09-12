@@ -30,3 +30,10 @@ class Movie(BaseModel):
 @app.get('/', response_model=List[Movie])
 async def index():
     return fake_movie_db
+
+
+@app.post('/', status_code=201)
+async def add_movie(payload: Movie):
+    movie = dict(payload)
+    fake_movie_db.append(movie)
+    return {'id': len(fake_movie_db) - 1}
