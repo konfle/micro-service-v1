@@ -5,12 +5,13 @@ services:
     build: ./movie_service
     command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
     volumes:
-      - ./movie-service/:/app/
+      - ./movie_service/:/app/
     ports:
       - "8001:8000"
     environment:
-      - DATABASE_URI=${MOVIE_DATABASE_URL}
+      - DATABASE_URL=${MOVIE_DATABASE_URL}
       - CAST_SERVICE_HOST_URL=http://cast_service:8000/api/v1/casts/
+      - MOVIE_DATABASE_URL=${MOVIE_DATABASE_URL}
 
   movie_db:
     image: postgres:12.1-alpine
@@ -19,17 +20,18 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=movie_db_dev
+      - POSTGRES_DB=${MOVIE_POSTGRES_DB}
 
   cast_service:
     build: ./cast_service
     command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
     volumes:
-      - ./cast-service/:/app/
+      - ./cast_service/:/app/
     ports:
       - "8002:8000"
     environment:
-      - DATABASE_URI=${CAST_DATABASE_URL}
+      - DATABASE_URL=${CAST_DATABASE_URL}
+      - CAST_DATABASE_URL=${CAST_DATABASE_URL}
 
   cast_db:
     image: postgres:12.1-alpine
@@ -38,7 +40,7 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=cast_db_dev
+      - POSTGRES_DB=${CAST_POSTGRES_DB}
 
 volumes:
   postgres_data_movie:
