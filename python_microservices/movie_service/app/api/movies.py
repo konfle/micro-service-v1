@@ -1,9 +1,9 @@
 from typing import List
 from fastapi import APIRouter, HTTPException
 
-from python_microservices.movie_service.app.api.models import MovieIn, MovieOut, MovieUpdate
-from python_microservices.movie_service.app.api import db_manager
-from python_microservices.movie_service.app.api.service import is_cast_present
+from app.api.models import MovieIn, MovieOut, MovieUpdate
+from app.api import db_manager
+from app.api.service import is_cast_present
 
 movies = APIRouter()
 

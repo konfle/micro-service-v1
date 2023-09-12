@@ -1,5 +1,5 @@
-from python_microservices.movie_service.app.api.models import MovieIn, MovieOut, MovieUpdate
-from python_microservices.movie_service.app.api.db import movies, database
+from app.api.models import MovieIn, MovieOut, MovieUpdate
+from app.api.db import movies, database
 
 
 async def add_movie(payload: MovieIn):

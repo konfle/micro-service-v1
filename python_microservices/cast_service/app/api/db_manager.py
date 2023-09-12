@@ -1,5 +1,5 @@
-from python_microservices.cast_service.app.api.models import CastIn, CastOut, CastUpdate
-from python_microservices.cast_service.app.api.db import casts, database
+from app.api.models import CastIn, CastOut, CastUpdate
+from app.api.db import casts, database
 
 
 async def add_cast(payload: CastIn):

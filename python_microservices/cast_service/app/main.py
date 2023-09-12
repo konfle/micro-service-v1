@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from python_microservices.cast_service.app.api.casts import casts
-from python_microservices.cast_service.app.api.db import metadata, database, engine
+from app.api.casts import casts
+from app.api.db import metadata, database, engine
 
 metadata.create_all(engine)
 
