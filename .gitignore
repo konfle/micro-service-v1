@@ -16,6 +16,7 @@ Pipfile.lock
 env3.*
 env
 .env
+python_microservices/movie_service/env/.env
 docs_build
 site_build
 venv
