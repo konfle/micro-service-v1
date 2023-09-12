@@ -18,41 +18,46 @@ async def get_movie(movie_id: int):
     movie = await db_manager.get_movie(movie_id)
     if not movie:
         raise HTTPException(status_code=404,
-                            detail=f"Movie with id: {movie_id} not found")
+                            detail=f"Movie with given id: {movie_id} not found")
     return movie
 
 
 @movies.post("/", response_model=MovieOut, status_code=201)
 async def create_movie(payload: MovieIn):
+
     for cast_id in payload.casts_id:
         if not is_cast_present(cast_id):
             raise HTTPException(status_code=404,
-                                detail=f"Cast with id:{cast_id} not found")
+                                detail=f"Cast with given id:{cast_id} not found")
 
     movie_id = await db_manager.add_movie(payload)
 
-    response = {
-        "id": movie_id,
-        **payload.model_dump()
-    }
+    response = {"id": movie_id, **payload.model_dump()}
 
     return response
 
 
-@movies.put('/{id}')
-async def update_movie(movie_id: int, payload: MovieIn):
+@movies.put("/{id}/", response_model=MovieOut)
+async def update_movie(movie_id: int, payload: MovieUpdate):
     movie = await db_manager.get_movie(movie_id)
+
     if not movie:
         raise HTTPException(status_code=404,
                             detail="Movie not found")
 
     update_data = payload.model_dump(exclude_unset=True)
+
+    if "casts_id" in update_data:
+        for cast_id in payload.casts_id:
+            if not is_cast_present(cast_id):
+                raise HTTPException(status_code=404,
+                                    detail=f"Cast with given id:{cast_id} not found")
+
     movie_in_db = MovieIn(**movie)
 
     updated_movie = movie_in_db.model_copy(update=update_data)
 
-    return await db_manager.update_movie(movie_id,
-                                         updated_movie)
+    return await db_manager.update_movie(movie_id, updated_movie)
 
 
 @movies.delete('/{id}')
