@@ -17,4 +17,4 @@ class MovieUpdate(MovieIn):
     name: Optional[str] = None
     plot: Optional[str] = None
     genres: Optional[List[str]] = None
-    casts: Optional[List[str]] = None
+    casts_id: Optional[List[int]] = None

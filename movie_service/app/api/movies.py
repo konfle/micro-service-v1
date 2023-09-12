@@ -13,7 +13,7 @@ async def get_movies():
     return await db_manager.get_all_movies()
 
 
-@movies.get("/{id}/", response_model=MovieOut)
+@movies.get("/{movie_id}/", response_model=MovieOut)
 async def get_movie(movie_id: int):
     movie = await db_manager.get_movie(movie_id)
     if not movie:
@@ -28,7 +28,7 @@ async def create_movie(payload: MovieIn):
     for cast_id in payload.casts_id:
         if not is_cast_present(cast_id):
             raise HTTPException(status_code=404,
-                                detail=f"Cast with given id:{cast_id} not found")
+                                detail=f"Cast with given id: {cast_id} not found")
 
     movie_id = await db_manager.add_movie(payload)
 
@@ -37,7 +37,7 @@ async def create_movie(payload: MovieIn):
     return response
 
 
-@movies.put("/{id}/", response_model=MovieOut)
+@movies.put("/{movie_id}/", response_model=MovieOut)
 async def update_movie(movie_id: int, payload: MovieUpdate):
     movie = await db_manager.get_movie(movie_id)
 
@@ -60,7 +60,7 @@ async def update_movie(movie_id: int, payload: MovieUpdate):
     return await db_manager.update_movie(movie_id, updated_movie)
 
 
-@movies.delete("/{id}/", response_model=None)
+@movies.delete("/{movie_id}/", response_model=None)
 async def delete_movie(movie_id: int):
     movie = await db_manager.get_movie(movie_id)
     if not movie:
