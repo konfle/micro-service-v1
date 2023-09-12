@@ -25,3 +25,8 @@ class Movie(BaseModel):
     plot: str
     genres: List[str]
     casts: List[str]
+
+
+@app.get('/', response_model=List[Movie])
+async def index():
+    return fake_movie_db
