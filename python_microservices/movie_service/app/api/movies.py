@@ -43,7 +43,7 @@ async def update_movie(movie_id: int, payload: MovieUpdate):
 
     if not movie:
         raise HTTPException(status_code=404,
-                            detail="Movie not found")
+                            detail=f"Movie with given id:{movie_id} not found")
 
     update_data = payload.model_dump(exclude_unset=True)
 
@@ -60,10 +60,10 @@ async def update_movie(movie_id: int, payload: MovieUpdate):
     return await db_manager.update_movie(movie_id, updated_movie)
 
 
-@movies.delete('/{id}')
+@movies.delete("/{id}/", response_model=None)
 async def delete_movie(movie_id: int):
     movie = await db_manager.get_movie(movie_id)
     if not movie:
         raise HTTPException(status_code=404,
-                            detail="Movie not found")
+                            detail=f"Movie with given id:{movie_id} not found")
     return await db_manager.delete_movie(movie_id)
