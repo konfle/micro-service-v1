@@ -3,16 +3,16 @@
 ---
 
 ## Description
-Microservice is the approach of breaking down large monolith application into individual applications specializing
+Microservice is the approach of breaking down large monolith applications into individual applications specializing
 in a specific service/functionality. This approach is often known as Service-Oriented Architecture or SOA.
 
 Python is a perfect tool for building micro-services because it comes with a great community, 
-easy learning curve and tons of libraries. Due to the introduction of asynchronous programming in Python, 
-web frameworks with performance on-par with GO and Node.js, has emerged.
+an easy learning curve, and tons of libraries. Due to the introduction of asynchronous programming in Python, 
+web frameworks with performance on par with GO and Node.js have emerged.
 
 FastAPI is a modern, high-performance, web framework, which comes with tons of cool features like auto-documentation 
 based on OpenAPI and built-in serialization and validation library. 
-See [here](https://fastapi.tiangolo.com/features/) for the list of all cool features in FastAPI.
+See [here](https://fastapi.tiangolo.com/features/) for the list of all the cool features in FastAPI.
 
 ## Goals
  - How to build REST API using FastAPI and PostgreSQL
@@ -23,7 +23,7 @@ See [here](https://fastapi.tiangolo.com/features/) for the list of all cool feat
 
 ## Data Management
 
-Current approach is Database Per Service.
+The current approach is Database Per Service.
 
 Using a database for each service is great to keep the microservices as loosely coupled as possible.
 Having a different database per service allows us to scale different services independently.
@@ -32,9 +32,9 @@ This has a disadvantage because implementing business transactions spanning mult
 In addition, the addition of network overhead makes it less efficient to use.
 
 
-## How to run project
+## How to run the project
  - Make sure you have installed `docker` and `docker-compose`
- - Prepare your own `.env` file (check examples section)
+ - Prepare your own `.env` file (check the examples section)
  - Run `docker-compose up -d`
  - Head over to http://localhost:8080/api/v1/movies/docs for movie service docs 
    and http://localhost:8080/api/v1/casts/docs for cast service docs
