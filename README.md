@@ -65,6 +65,20 @@ In addition, the addition of network overhead makes it less efficient to use.
      POSTGRES_PASSWORD=password123
      ```
 
+### Troubleshooting
+
+- Database table schema different from defined in models.
+
+    It may happen that after changes in database models in database services table has old i.e. column name.
+    Possible fix for this issue please use command `docker-compose down -v` to remove docker container with database volume.
+
+
+- Database connection problem after rebuild.
+
+    The application was built so fast or slow that the database may have a problem with proper connection.
+    Possible fix for this issue you can try this command `docker restart <database_container_id_or_name>`.
+    
+
 ### Resources
  - [Microservice in Python using FastAPI](https://dev.to/paurakhsharma/microservice-in-python-using-fastapi-24cc)
  - [Developing and Testing an Asynchronous API with FastAPI and Pytest](https://testdriven.io/blog/fastapi-crud/)
