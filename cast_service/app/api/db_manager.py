@@ -1,5 +1,6 @@
 from app.api.models import CastIn, CastOut, CastUpdate
 from app.api.db import casts, database
+from sqlalchemy import select
 
 
 async def add_cast(payload: CastIn):
@@ -8,6 +9,7 @@ async def add_cast(payload: CastIn):
     return await database.execute(query=query)
 
 
-async def get_cast(cast_id):
-    query = casts.select(casts.c.id == cast_id)
+async def get_cast(cast_id: int):
+    query = casts.select().where(cast_id == casts.c.id)
+
     return await database.fetch_one(query=query)
