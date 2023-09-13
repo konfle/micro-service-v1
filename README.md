@@ -37,6 +37,9 @@ In addition, the addition of network overhead makes it less efficient to use.
  - Head over to http://localhost:8080/api/v1/movies/docs for movie service docs 
    and http://localhost:8080/api/v1/casts/docs for cast service docs
 
+## How to run automated tests
+
+- TBA, command `docker-compose exec cast_service pytest .`
 
 ### Examples
 
