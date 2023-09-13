@@ -1,7 +1,5 @@
 # movies-microservices
 
----
-
 ## Description
 Microservice is the approach of breaking down large monolith applications into individual applications specializing
 in a specific service/functionality. This approach is often known as Service-Oriented Architecture or SOA.
