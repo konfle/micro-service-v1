@@ -102,3 +102,7 @@ Example test run output
 ### Resources
  - [Microservice in Python using FastAPI](https://dev.to/paurakhsharma/microservice-in-python-using-fastapi-24cc)
  - [Developing and Testing an Asynchronous API with FastAPI and Pytest](https://testdriven.io/blog/fastapi-crud/)
+ - [Monkeypatch](https://docs.pytest.org/en/latest/how-to/monkeypatch.html)
+ - [Startup and shutdown event handlers](https://fastapi.tiangolo.com/advanced/events/)
+ - [Pytest](https://docs.pytest.org/en/latest/index.html)
+ - [FastAPI](https://fastapi.tiangolo.com/)
