@@ -1,5 +1,6 @@
 import json
 import pytest
+import random
 
 from fastapi.testclient import TestClient
 
@@ -113,11 +114,62 @@ class TestEndpointCreateCast:
 
 
 class TestEndpointGetCastById:
-    def test_get(self, test_app):
-        response = test_app.get("1/")
+    """
+    Test class for the 'get_cast_by_id' endpoint.
+
+    This class contains tests related to retrieving a cast member by their ID.
+    It uses the FastAPI TestClient to send requests and validate responses.
+    """
+
+    def test_get_cast_by_id_success(self, test_app, mock_get_cast_by_id):
+        """
+        Test retrieving a cast member by their ID successfully.
+
+        This test case sends a GET request to the 'get_cast_by_id' endpoint with a
+        valid cast ID and checks that the response status code is 200 and that the
+        response JSON matches the expected data.
+
+        Args:
+            test_app: Pytest fixture providing the FastAPI TestClient.
+            mock_get_cast_by_id: Fixture for mocking 'db_manager.get_cast_by_id'.
+        """
+        cast_id = random.randint(1, 100)
+        response = test_app.get(f"{cast_id}/")
+
         assert response.status_code == 200
         assert response.json() == {
-            "name": "Daisy Ridley",
+            "name": "Jane Doe",
             "nationality": "British",
-            "id": 1
+            "id": cast_id
         }
+
+    def test_get_cast_by_id_not_found(self, test_app):
+        """
+        Test retrieving a cast member by a non-existent ID.
+
+        This test case sends a GET request to the 'get_cast_by_id' endpoint with a
+        cast ID that does not exist in the database and checks that the response
+        status code is 404 (Not Found).
+
+        Args:
+            test_app: Pytest fixture providing the FastAPI TestClient.
+        """
+        cast_id = random.randint(1, 100)
+        response = test_app.get(f"{cast_id}/")
+
+        assert response.status_code == 404
+
+    def test_get_cast_by_id_with_bad_data_type(self, test_app):
+        """
+        Test retrieving a cast member with an invalid cast ID data type.
+
+        This test case sends a GET request to the 'get_cast_by_id' endpoint with an
+        invalid cast ID data type (e.g., a non-integer value) and checks that the
+        response status code is 422 (Unprocessable Entity), indicating a validation
+        failure.
+
+        Args:
+            test_app: Pytest fixture providing the FastAPI TestClient.
+        """
+        response = test_app.get("z")
+        assert response.status_code == 422

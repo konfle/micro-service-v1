@@ -32,14 +32,47 @@ def test_app():
 @pytest.fixture
 def mock_add_cast(monkeypatch):
     """
-    Fixture to mock the 'db_manager.add_cast' function.
+    Pytest fixture for mocking the 'db_manager.add_cast' function.
 
     This fixture replaces the actual 'db_manager.add_cast' function with a mock
-    implementation to isolate the tests from the database.
+    implementation to isolate tests from the database. It allows you to control
+    the behavior of 'add_cast' during testing and simulate successful cast member
+    additions.
 
     Args:
         monkeypatch: Pytest fixture for patching modules and objects during testing.
+
+    Returns:
+        callable: A callable mock function for 'db_manager.add_cast'.
+            The mock function takes a 'payload' parameter and returns a predefined
+            cast ID (e.g., 1) to simulate a successful cast member addition.
     """
     async def mock_add_cast(payload):
         return 1
     monkeypatch.setattr(dbm, "add_cast", mock_add_cast)
+
+
+@pytest.fixture
+def mock_get_cast_by_id(monkeypatch):
+    """
+    Pytest fixture for mocking the 'db_manager.get_cast_by_id' function.
+
+    This fixture replaces the actual 'db_manager.get_cast_by_id' function with a
+    mock implementation to isolate tests from the database. It allows you to control
+    the behavior of 'get_cast_by_id' during testing.
+
+    Args:
+        monkeypatch: Pytest fixture for patching modules and objects during testing.
+
+    Returns:
+        callable: A callable mock function for 'db_manager.get_cast_by_id'.
+            The mock function takes a 'cast_id' parameter and returns a predefined
+            cast member dictionary based on the provided 'cast_id'.
+    """
+    async def mock_get_cast_by_id(cast_id: int):
+        return {
+            "name": "Jane Doe",
+            "nationality": "British",
+            "id": cast_id
+        }
+    monkeypatch.setattr(dbm, "get_cast_by_id", mock_get_cast_by_id)
