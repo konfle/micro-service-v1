@@ -13,7 +13,7 @@ async def create_cast(payload: CastIn):
 
     response = {
         "id": cast_id,
-        **payload.dict()
+        **payload.model_dump()
     }
 
     return response
