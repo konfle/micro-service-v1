@@ -14,6 +14,15 @@ def test_app():
 
 @pytest.fixture
 def mock_add_cast(monkeypatch):
+    """
+    Fixture to mock the 'db_manager.add_cast' function.
+
+    This fixture replaces the actual 'db_manager.add_cast' function with a mock
+    implementation to isolate the tests from the database.
+
+    Args:
+        monkeypatch: Pytest fixture for patching modules and objects during testing.
+    """
     async def mock_add_cast(payload):
         return 1
     monkeypatch.setattr(dbm, "add_cast", mock_add_cast)
