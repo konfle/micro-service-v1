@@ -53,9 +53,9 @@ Example test run output
   plugins: anyio-3.7.1
   collected 6 items
   
-  app/api/tests/test_casts.py ......                                                              [100%]
+  app/api/tests/test_casts.py ........                                                            [100%]
   
-  ======================================== 6 passed in 1.38s ===========================================
+  ======================================== 8 passed in 1.40s ===========================================
   ```
 
 ### Examples
