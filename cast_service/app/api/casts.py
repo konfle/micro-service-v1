@@ -20,8 +20,8 @@ async def create_cast(payload: CastIn):
 
 
 @casts.get("/{cast_id}/", response_model=CastOut)
-async def get_cast(cast_id: int):
-    cast = await db_manager.get_cast(cast_id)
+async def get_cast_by_id(cast_id: int):
+    cast = await db_manager.get_cast_by_id(cast_id)
     if not cast:
         raise HTTPException(status_code=404,
                             detail="Cast not found")
