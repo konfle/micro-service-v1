@@ -39,7 +39,24 @@ In addition, the addition of network overhead makes it less efficient to use.
 
 ## How to run automated tests
 
-- TBA, command `docker-compose exec cast_service pytest .`
+- Make sure you have installed `docker` and `docker-compose`
+- Make sure Docker containers are up and running.
+- Run command `docker-compose exec cast_service pytest .`
+
+Example test run output
+
+  ```
+  (venv) PS C:\Users\my_user\PycharmProjects\micro-service-v1> docker-compose exec cast_service pytest .
+  ======================================== test session starts =========================================
+  platform linux -- Python 3.10.13, pytest-7.4.2, pluggy-1.3.0
+  rootdir: /app
+  plugins: anyio-3.7.1
+  collected 6 items
+  
+  app/api/tests/test_casts.py ......                                                              [100%]
+  
+  ======================================== 6 passed in 1.38s ===========================================
+  ```
 
 ### Examples
 
