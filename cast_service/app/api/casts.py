@@ -1,10 +1,18 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from typing import List
 
 from app.api.models import CastOut, CastIn, CastUpdate
 from app.api import db_manager
 
 casts = APIRouter()
+
+
+@casts.get("/", response_model=List[CastOut])
+async def get_all_cast(request: Request):
+    if request.query_params:
+        raise HTTPException(status_code=400,
+                            detail="This endpoint does not support query parameters.")
+    return await db_manager.get_all_casts()
 
 
 @casts.post("/", response_model=CastOut, status_code=201)

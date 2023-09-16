@@ -7,6 +7,67 @@ from fastapi.testclient import TestClient
 from app.api import db_manager as dbm
 
 
+class TestEndpointGetAllCast:
+    """
+    Test class for the 'get_all_casts' endpoint.
+
+    This class contains tests related to retrieving a list of all cast members.
+    It uses the FastAPI TestClient to send requests and validate responses.
+    """
+    def test_get_all_casts(self, test_app, mock_get_all_casts):
+        """
+        Test successful retrieval of all cast members.
+
+        This test case sends a GET request to the 'get_all_cast' endpoint to retrieve
+        a list of cast members. It checks that the response status code is 200, that
+        the response contains a JSON list, and that the list is not empty.
+
+        Args:
+            test_app: Pytest fixture providing the FastAPI TestClient.
+            mock_get_all_casts: Fixture for mocking 'db_manager.get_all_casts'.
+        """
+        response = test_app.get("")
+
+        assert response.status_code == 200
+        assert isinstance(response.json(), list)
+        assert len(response.json()) > 0
+
+    def test_get_all_cast_empty_database(self, test_app, mock_get_all_casts_empty):
+        """
+        Test retrieval of all cast members from an empty database.
+
+        This test case sends a GET request to the 'get_all_cast' endpoint when the
+        database is empty. It checks that the response status code is 200 and that
+        the response contains an empty JSON list.
+
+        Args:
+            test_app: Pytest fixture providing the FastAPI TestClient.
+            mock_get_all_casts_empty: Fixture for mocking 'db_manager.get_all_casts' for an empty database.
+        """
+        response = test_app.get("")
+
+        assert response.status_code == 200
+        assert isinstance(response.json(), list)
+        assert len(response.json()) == 0
+
+    def test_get_all_cast_with_query_parameter(self, test_app):
+        """
+        Test handling of query parameters when provided to the 'get_all_cast' endpoint.
+
+        This test case sends a GET request to the 'get_all_cast' endpoint with an
+        invalid query parameter ('invalid_param=123'). It checks that the response
+        status code is 400, indicating a bad request, and that the response contains
+        an appropriate error message indicating that the endpoint does not support
+        query parameters.
+
+        Args:
+            test_app: Pytest fixture providing the FastAPI TestClient.
+        """
+        response = test_app.get("?invalid_param=123")
+        assert response.status_code == 400
+        assert "This endpoint does not support query parameters." in response.text
+
+
 class TestEndpointCreateCast:
     """
     Test class for the 'create_cast' endpoint.

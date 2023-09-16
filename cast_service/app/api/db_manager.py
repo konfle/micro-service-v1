@@ -9,6 +9,11 @@ async def add_cast(payload: CastIn):
     return await database.execute(query=query)
 
 
+async def get_all_casts():
+    query = casts.select()
+    return await database.fetch_all(query=query)
+
+
 async def get_cast_by_id(cast_id: int):
     query = casts.select().where(cast_id == casts.c.id)
 

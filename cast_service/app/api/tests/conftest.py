@@ -76,3 +76,48 @@ def mock_get_cast_by_id(monkeypatch):
             "id": cast_id
         }
     monkeypatch.setattr(dbm, "get_cast_by_id", mock_get_cast_by_id)
+
+
+@pytest.fixture
+def mock_get_all_casts(monkeypatch):
+    """
+    Pytest fixture for mocking the 'db_manager.get_all_casts' function.
+
+    This fixture replaces the actual 'db_manager.get_all_casts' function with a mock
+    implementation to isolate tests from the database. It allows you to control the
+    behavior of 'get_all_casts' during testing.
+
+    Args:
+        monkeypatch: Pytest fixture for patching modules and objects during testing.
+
+    Returns:
+        callable: A callable mock function for 'db_manager.get_all_casts'.
+            The mock function should return a list of predefined cast member data.
+    """
+    async def mock_get_all_casts():
+        cast_data = [
+            {"name": "John Doe", "nationality": "American", "id": 1},
+            {"name": "Jane Smith", "nationality": "British", "id": 2},
+        ]
+        return cast_data
+    monkeypatch.setattr(dbm, "get_all_casts", mock_get_all_casts)
+
+
+@pytest.fixture
+def mock_get_all_casts_empty(monkeypatch):
+    """
+    Pytest fixture for mocking 'db_manager.get_all_casts' for an empty database.
+
+    This fixture replaces the actual 'db_manager.get_all_casts' function with a mock
+    implementation that returns an empty list to simulate an empty database.
+
+    Args:
+        monkeypatch: Pytest fixture for patching modules and objects during testing.
+
+    Returns:
+        callable: A callable mock function for 'db_manager.get_all_casts'.
+            The mock function should return an empty list.
+    """
+    async def mock_get_all_casts_empty():
+        return []
+    monkeypatch.setattr(dbm, "get_all_casts", mock_get_all_casts_empty)
