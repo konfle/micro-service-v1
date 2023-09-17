@@ -18,3 +18,14 @@ async def get_cast_by_id(cast_id: int):
     query = casts.select().where(cast_id == casts.c.id)
 
     return await database.fetch_one(query=query)
+
+
+async def update_cast(cast_id: int, payload: CastIn):
+    query = (
+        casts
+        .update()
+        .where(casts.c.id == cast_id)
+        .values(**payload.dict())
+        .returning(casts.c.id)
+    )
+    return await database.execute(query=query)
