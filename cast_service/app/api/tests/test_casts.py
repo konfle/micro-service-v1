@@ -234,3 +234,8 @@ class TestEndpointGetCastById:
         """
         response = test_app.get("z")
         assert response.status_code == 422
+
+
+class TestEndpointPutCastById:
+    # TODO: Add test.
+    pass
