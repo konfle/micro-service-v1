@@ -1,3 +1,5 @@
+import asyncio
+
 from typing import List
 from fastapi import APIRouter, HTTPException
 
@@ -52,18 +54,10 @@ async def update_movie(movie_id: int, payload: MovieUpdate):
             if not is_cast_present(cast_id):
                 raise HTTPException(status_code=404,
                                     detail=f"Cast with given id:{cast_id} not found")
-
     movie_in_db = MovieIn(**movie)
-
     updated_movie = movie_in_db.model_copy(update=update_data)
 
-    return await db_manager.update_movie(movie_id, updated_movie)
+    movie_id = await db_manager.update_movie(movie_id, updated_movie)
+    update_data["id"] = movie_id
 
-
-@movies.delete("/{movie_id}/", response_model=None)
-async def delete_movie(movie_id: int):
-    movie = await db_manager.get_movie(movie_id)
-    if not movie:
-        raise HTTPException(status_code=404,
-                            detail=f"Movie with given id:{movie_id} not found")
-    return await db_manager.delete_movie(movie_id)
+    return update_data

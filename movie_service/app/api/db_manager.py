@@ -29,5 +29,6 @@ async def update_movie(movie_id: int, payload: MovieIn):
         .update()
         .where(movies.c.id == movie_id)
         .values(**payload.dict())
+        .returning(movies.c.id)
     )
     return await database.execute(query=query)
