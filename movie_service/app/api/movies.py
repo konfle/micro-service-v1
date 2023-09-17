@@ -60,4 +60,13 @@ async def update_movie(movie_id: int, payload: MovieUpdate):
     movie_id = await db_manager.update_movie(movie_id, updated_movie)
     update_data["id"] = movie_id
 
-    return update_data
+    return await db_manager.update_movie(movie_id, updated_movie)
+
+
+@movies.delete("/{movie_id}/", response_model=None)
+async def delete_movie(movie_id: int):
+    movie = await db_manager.get_movie(movie_id)
+    if not movie:
+        raise HTTPException(status_code=404,
+                            detail=f"Movie with given id:{movie_id} not found")
+    return await db_manager.delete_movie(movie_id)
