@@ -1,5 +1,3 @@
-import asyncio
-
 from typing import List
 from fastapi import APIRouter, HTTPException
 
@@ -60,7 +58,7 @@ async def update_movie(movie_id: int, payload: MovieUpdate):
     movie_id = await db_manager.update_movie(movie_id, updated_movie)
     update_data["id"] = movie_id
 
-    return await db_manager.update_movie(movie_id, updated_movie)
+    return update_data
 
 
 @movies.delete("/{movie_id}/", response_model=None)
