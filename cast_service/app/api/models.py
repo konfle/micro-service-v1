@@ -12,4 +12,4 @@ class CastOut(CastIn):
 
 
 class CastUpdate(CastIn):
-    name: Optional[str] = None
+    pass
