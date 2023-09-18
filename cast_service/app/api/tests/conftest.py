@@ -1,4 +1,5 @@
 import pytest
+import random
 
 from fastapi.testclient import TestClient
 
@@ -121,3 +122,45 @@ def mock_get_all_casts_empty(monkeypatch):
     async def mock_get_all_casts_empty():
         return []
     monkeypatch.setattr(dbm, "get_all_casts", mock_get_all_casts_empty)
+
+
+@pytest.fixture
+def mock_get_cast_by_id_not_found(monkeypatch):
+    """
+    Pytest fixture for mocking 'db_manager.get_cast_by_id' to simulate a cast not found scenario.
+
+    This fixture replaces the actual 'db_manager.get_cast_by_id' function with a mock
+    implementation that returns None, simulating the scenario where the cast with the
+    specified ID is not found in the database.
+
+    Args:
+        monkeypatch: Pytest fixture for patching modules and objects during testing.
+
+    Returns:
+        callable: A callable mock function for 'db_manager.get_cast_by_id' that returns None.
+    """
+    async def mock_get_cast_by_id_not_found(cast_id: int):
+        # Simulate a scenario where the cast is not found by returning None
+        return None
+
+    monkeypatch.setattr(dbm, "get_cast_by_id", mock_get_cast_by_id_not_found)
+
+
+@pytest.fixture
+def mock_update_cast(monkeypatch):
+    """
+    Pytest fixture for mocking 'db_manager.update_cast'.
+
+    This fixture replaces the actual 'db_manager.update_cast' function with a mock
+    implementation that returns the updated cast ID (e.g., 1 to indicate success).
+
+    Args:
+        monkeypatch: Pytest fixture for patching modules and objects during testing.
+
+    Returns:
+        callable: A callable mock function for 'db_manager.update_cast'.
+            The mock function should return the updated cast ID.
+    """
+    async def mock_update_cast(cast_id: int, updated_cast_data: dict):
+        return cast_id
+    monkeypatch.setattr(dbm, "update_cast", mock_update_cast)

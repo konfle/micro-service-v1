@@ -238,4 +238,96 @@ class TestEndpointGetCastById:
 
 class TestEndpointPutCastById:
     # TODO: Add test.
-    pass
+    def test_update_cast_successful(self, test_app, mock_get_cast_by_id, mock_update_cast):
+        """
+        Test successful update of a cast member.
+
+        This test case simulates a successful update by providing a valid 'cast_id' and
+        'payload' with updated data. It checks that the response status code is 200 and
+        that the response contains the updated cast data.
+
+        Args:
+            test_app: Pytest fixture providing the FastAPI TestClient.
+            mock_get_cast_by_id: Fixture for mocking 'db_manager.get_cast_by_id'.
+            mock_update_cast: Fixture for mocking 'db_manager.update_cast'.
+        """
+        cast_id = random.randint(1, 100)
+        updated_payload = {
+            "id": cast_id,
+            "name": "John Doe II",
+            "nationality": "Polish"
+        }
+
+        response = test_app.put(f"{cast_id}/", json=updated_payload)
+
+        assert response.status_code == 200
+        assert response.json() == updated_payload
+
+    def test_update_cast_not_found(self, test_app, mock_get_cast_by_id_not_found):
+        """
+        Test handling of the case when the cast to be updated is not found.
+
+        This test case simulates the scenario where the specified 'cast_id' does not exist
+        in the database. It checks that the response status code is 404 and that the response
+        contains an appropriate error message.
+
+        Args:
+            test_app: Pytest fixture providing the FastAPI TestClient.
+            mock_get_cast_by_id_not_found: Fixture for mocking 'db_manager.get_cast_by_id'
+                to simulate a cast not found scenario.
+        """
+        invalid_cast_id = random.randint(900, 999)
+
+        updated_payload = {
+            "name": "John Doe II",
+            "nationality": "Polish"
+        }
+
+        response = test_app.put(f"{invalid_cast_id}/", json=updated_payload)
+
+        assert response.status_code == 404
+        assert f"Cast with given id {invalid_cast_id} not found" in response.text
+
+    def test_update_cast_invalid_payload(self, test_app):
+        """
+        Test handling of an invalid payload when updating a cast member.
+
+        This test case simulates the scenario where an invalid payload is provided for updating
+        a cast member. It checks that the response status code is 422 (Unprocessable Entity)
+        and that the response contains a validation error message.
+
+        Args:
+            test_app: Pytest fixture providing the FastAPI TestClient.
+        """
+        cast_id = random.randint(1, 100)
+
+        invalid_payload = {
+            "nationality": "Polish"
+        }
+
+        response = test_app.put(f"{cast_id}/", json=invalid_payload)
+
+        assert response.status_code == 422
+
+        response = response.json()
+        assert "Field required" in response["detail"][0]["msg"]
+
+    def test_update_cast_empty_payload(self, test_app):
+        """
+        Test handling of an empty payload when updating a cast member.
+
+        This edge test case simulates the scenario where the client sends a PUT request
+        with an empty JSON payload. It checks that the response status code is 422
+        (Unprocessable Entity) and that the response contains a validation error message
+        indicating that the payload is empty.
+
+        Args:
+            test_app: Pytest fixture providing the FastAPI TestClient.
+        """
+        cast_id = random.randint(1, 100)
+
+        response = test_app.put(f"{cast_id}/", json={})
+
+        assert response.status_code == 422
+        response = response.json()
+        assert "Field required" in response["detail"][0]["msg"]
