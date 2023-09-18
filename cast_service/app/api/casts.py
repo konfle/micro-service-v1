@@ -42,7 +42,7 @@ async def update_cast(cast_id: int, payload: CastUpdate):
 
     if not cast:
         raise HTTPException(status_code=404,
-                            detail=f"Cast with given id {cast_id} not found!!!")
+                            detail=f"Cast with given id {cast_id} not found")
 
     update_data = payload.model_dump(exclude_unset=True)
 
